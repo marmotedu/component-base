@@ -11,6 +11,7 @@ require (
 	github.com/go-playground/universal-translator v0.17.0
 	github.com/go-playground/validator/v10 v10.4.1
 	github.com/gosuri/uitable v0.0.4
+	github.com/h2non/filetype v1.1.0
 	github.com/json-iterator/go v1.1.10
 	github.com/marmotedu/errors v1.0.0
 	github.com/marmotedu/log v1.0.0

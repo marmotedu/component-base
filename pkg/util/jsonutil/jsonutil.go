@@ -5,10 +5,11 @@
 package jsonutil
 
 import (
-	"encoding/json"
 	"strings"
 
 	"k8s.io/klog"
+
+	"github.com/marmotedu/component-base/pkg/json"
 )
 
 type JSONRawMessage []byte

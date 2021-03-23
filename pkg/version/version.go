@@ -7,11 +7,12 @@
 package version
 
 import (
-	"encoding/json"
 	"fmt"
 	"runtime"
 
 	"github.com/gosuri/uitable"
+
+	"github.com/marmotedu/component-base/pkg/json"
 )
 
 var (

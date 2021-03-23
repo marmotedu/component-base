@@ -7,10 +7,8 @@ package runtime
 import (
 	"fmt"
 
-	jsoniter "github.com/json-iterator/go"
+	"github.com/marmotedu/component-base/pkg/json"
 )
-
-var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
 // NegotiateError is returned when a ClientNegotiator is unable to locate
 // a serializer for the requested operation.

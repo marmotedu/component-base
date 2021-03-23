@@ -81,6 +81,7 @@ func (t *hasTerm) RequiresExactMatch(field string) (value string, found bool) {
 	if t.field == field {
 		return t.value, true
 	}
+
 	return "", false
 }
 
@@ -92,6 +93,7 @@ func (t *hasTerm) Transform(fn TransformFunc) (Selector, error) {
 	if len(field) == 0 && len(value) == 0 {
 		return Everything(), nil
 	}
+
 	return &hasTerm{field, value}, nil
 }
 
@@ -113,6 +115,7 @@ func (t *hasTerm) DeepCopySelector() Selector {
 	}
 	out := new(hasTerm)
 	*out = *t
+
 	return out
 }
 
@@ -140,6 +143,7 @@ func (t *notHasTerm) Transform(fn TransformFunc) (Selector, error) {
 	if len(field) == 0 && len(value) == 0 {
 		return Everything(), nil
 	}
+
 	return &notHasTerm{field, value}, nil
 }
 
@@ -161,6 +165,7 @@ func (t *notHasTerm) DeepCopySelector() Selector {
 	}
 	out := new(notHasTerm)
 	*out = *t
+
 	return out
 }
 
@@ -172,6 +177,7 @@ func (t andTerm) Matches(ls Fields) bool {
 			return false
 		}
 	}
+
 	return true
 }
 
@@ -187,6 +193,7 @@ func (t andTerm) Empty() bool {
 			return false
 		}
 	}
+
 	return true
 }
 
@@ -199,6 +206,7 @@ func (t andTerm) RequiresExactMatch(field string) (string, bool) {
 			return value, found
 		}
 	}
+
 	return "", false
 }
 
@@ -213,6 +221,7 @@ func (t andTerm) Transform(fn TransformFunc) (Selector, error) {
 			next = append(next, n)
 		}
 	}
+
 	return andTerm(next), nil
 }
 
@@ -222,6 +231,7 @@ func (t andTerm) Requirements() Requirements {
 		rs := s.Requirements()
 		reqs = append(reqs, rs...)
 	}
+
 	return reqs
 }
 
@@ -230,6 +240,7 @@ func (t andTerm) String() string {
 	for _, q := range t {
 		terms = append(terms, q.String())
 	}
+
 	return strings.Join(terms, ",")
 }
 
@@ -241,6 +252,7 @@ func (t andTerm) DeepCopySelector() Selector {
 	for i := range t {
 		out[i] = t[i].DeepCopySelector()
 	}
+
 	return andTerm(out)
 }
 
@@ -257,6 +269,7 @@ func SelectorFromSet(ls Set) Selector {
 	if len(items) == 1 {
 		return items[0]
 	}
+
 	return andTerm(items)
 }
 
@@ -313,6 +326,7 @@ func UnescapeValue(s string) (string, error) {
 				return "", InvalidEscapeSequence{sequence: string([]rune{'\\', c})}
 			}
 			inSlash = false
+
 			continue
 		}
 
@@ -342,6 +356,7 @@ func ParseSelectorOrDie(s string) Selector {
 	if err != nil {
 		panic(err)
 	}
+
 	return selector
 }
 
@@ -415,6 +430,7 @@ func splitTerm(term string) (lhs, op, rhs string, ok bool) {
 			}
 		}
 	}
+
 	return "", "", "", false
 }
 
@@ -448,6 +464,7 @@ func parseSelector(selector string, fn TransformFunc) (Selector, error) {
 	if len(items) == 1 {
 		return items[0].Transform(fn)
 	}
+
 	return andTerm(items).Transform(fn)
 }
 

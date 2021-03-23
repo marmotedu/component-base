@@ -133,7 +133,9 @@ func TestSetColonSeparatedMultimapStringString(t *testing.T) {
 					"b": {"again", "beautiful"},
 					"c": {"world"},
 				}}, ""},
-		{"three keys, multiple items in one key, multiple Set invocations", []string{"a:hello,b:again", "c:world", "b:beautiful"},
+		{
+			"three keys, multiple items in one key, multiple Set invocations",
+			[]string{"a:hello,b:again", "c:world", "b:beautiful"},
 			NewColonSeparatedMultimapStringString(&nilMap),
 			&ColonSeparatedMultimapStringString{
 				initialized: true,
@@ -141,7 +143,9 @@ func TestSetColonSeparatedMultimapStringString(t *testing.T) {
 					"a": {"hello"},
 					"b": {"again", "beautiful"},
 					"c": {"world"},
-				}}, ""},
+				}},
+			"",
+		},
 		{"missing value", []string{"a"},
 			NewColonSeparatedMultimapStringString(&nilMap),
 			nil,
@@ -188,8 +192,16 @@ func TestRoundTripColonSeparatedMultimapStringString(t *testing.T) {
 		{"one key", []string{"one:foo"}, "one:foo"},
 		{"two keys", []string{"one:foo,two:bar"}, "one:foo,two:bar"},
 		{"two keys, multiple items in one key", []string{"one:foo, two:bar, one:baz"}, "one:foo,one:baz,two:bar"},
-		{"three keys, multiple items in one key", []string{"a:hello,b:again,c:world,b:beautiful"}, "a:hello,b:again,b:beautiful,c:world"},
-		{"three keys, multiple items in one key, multiple Set invocations", []string{"a:hello,b:again", "c:world", "b:beautiful"}, "a:hello,b:again,b:beautiful,c:world"},
+		{
+			"three keys, multiple items in one key",
+			[]string{"a:hello,b:again,c:world,b:beautiful"},
+			"a:hello,b:again,b:beautiful,c:world",
+		},
+		{
+			"three keys, multiple items in one key, multiple Set invocations",
+			[]string{"a:hello,b:again", "c:world", "b:beautiful"},
+			"a:hello,b:again,b:beautiful,c:world",
+		},
 	}
 
 	for _, c := range cases {

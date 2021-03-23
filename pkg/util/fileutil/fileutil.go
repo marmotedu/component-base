@@ -205,14 +205,18 @@ func WriteFile(path string, file []byte) error {
 
 // GetIntraDir returns a string that can be added to filepath.Join to implement directory depth, "" on error
 // eg given a pattern of 0af63ce3c99162e9df23a997f62621c5 and a depth of 2 length of 3
-// returns 0af/63c or 0af\63c ( dependin on os)  that can be later used like this  filepath.Join(directory, intradir, basename).
+// returns 0af/63c or 0af\63c ( dependin on os)  that can be later used like this  filepath.Join(directory, intradir,
+// basename).
 func GetIntraDir(pattern string, depth, length int) string {
 	if depth < 1 || length < 1 || (depth*length > len(pattern)) {
 		return ""
 	}
 	intraDir := pattern[0:length] // depth 1 , get length number of characters from pattern
 	for i := 1; i < depth; i++ {  // for every extra depth: move to the right of the pattern length positions, get length number of chars
-		intraDir = filepath.Join(intraDir, pattern[length*i:length*(i+1)]) //  adding each time to intradir the extra characters with a filepath join
+		intraDir = filepath.Join(
+			intraDir,
+			pattern[length*i:length*(i+1)],
+		) //  adding each time to intradir the extra characters with a filepath join
 	}
 	return intraDir
 }

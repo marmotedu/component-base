@@ -14,11 +14,16 @@ import (
 	"github.com/marmotedu/component-base/pkg/validation/field"
 )
 
-const qnameCharFmt string = "[A-Za-z0-9]"
-const qnameExtCharFmt string = "[-A-Za-z0-9_.]"
-const qualifiedNameFmt string = "(" + qnameCharFmt + qnameExtCharFmt + "*)?" + qnameCharFmt
-const qualifiedNameErrMsg string = "must consist of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character"
-const qualifiedNameMaxLength int = 63
+const (
+	qnameCharFmt     string = "[A-Za-z0-9]"
+	qnameExtCharFmt  string = "[-A-Za-z0-9_.]"
+	qualifiedNameFmt string = "(" + qnameCharFmt + qnameExtCharFmt + "*)?" + qnameCharFmt
+)
+
+const (
+	qualifiedNameErrMsg    string = "must consist of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character"
+	qualifiedNameMaxLength int    = 63
+)
 
 var qualifiedNameRegexp = regexp.MustCompile("^" + qualifiedNameFmt + "$")
 
@@ -43,7 +48,16 @@ func IsQualifiedName(value string) []string {
 			errs = append(errs, prefixEach(msgs, "prefix part ")...)
 		}
 	default:
-		return append(errs, "a qualified name "+RegexError(qualifiedNameErrMsg, qualifiedNameFmt, "MyName", "my.name", "123-abc")+" with an optional DNS subdomain prefix and '/' (e.g. 'example.com/MyName')")
+		return append(
+			errs,
+			"a qualified name "+RegexError(
+				qualifiedNameErrMsg,
+				qualifiedNameFmt,
+				"MyName",
+				"my.name",
+				"123-abc",
+			)+" with an optional DNS subdomain prefix and '/' (e.g. 'example.com/MyName')",
+		)
 	}
 
 	if len(name) == 0 {
@@ -52,12 +66,16 @@ func IsQualifiedName(value string) []string {
 		errs = append(errs, "name part "+MaxLenError(qualifiedNameMaxLength))
 	}
 	if !qualifiedNameRegexp.MatchString(name) {
-		errs = append(errs, "name part "+RegexError(qualifiedNameErrMsg, qualifiedNameFmt, "MyName", "my.name", "123-abc"))
+		errs = append(
+			errs,
+			"name part "+RegexError(qualifiedNameErrMsg, qualifiedNameFmt, "MyName", "my.name", "123-abc"),
+		)
 	}
 	return errs
 }
 
 const labelValueFmt string = "(" + qualifiedNameFmt + ")?"
+
 const labelValueErrMsg string = "a valid label must be an empty string or consist of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character"
 
 // LabelValueMaxLength is a label's max length.
@@ -80,6 +98,7 @@ func IsValidLabelValue(value string) []string {
 }
 
 const dns1123LabelFmt string = "[a-z0-9]([-a-z0-9]*[a-z0-9])?"
+
 const dns1123LabelErrMsg string = "a DNS-1123 label must consist of lower case alphanumeric characters or '-', and must start and end with an alphanumeric character"
 
 // DNS1123LabelMaxLength is a label's max length in DNS (RFC 1123).
@@ -101,6 +120,7 @@ func IsDNS1123Label(value string) []string {
 }
 
 const dns1123SubdomainFmt string = dns1123LabelFmt + "(\\." + dns1123LabelFmt + ")*"
+
 const dns1123SubdomainErrorMsg string = "a DNS-1123 subdomain must consist of lower case alphanumeric characters, '-' or '.', and   must start and end with an alphanumeric character"
 
 // DNS1123SubdomainMaxLength is a subdomain's max length in DNS (RFC 1123).
@@ -165,8 +185,10 @@ func IsValidIPv6Address(fldPath *field.Path, value string) field.ErrorList {
 	return allErrors
 }
 
-const percentFmt string = "[0-9]+%"
-const percentErrMsg string = "a valid percent string must be a numeric string followed by an ending '%'"
+const (
+	percentFmt    string = "[0-9]+%"
+	percentErrMsg string = "a valid percent string must be a numeric string followed by an ending '%'"
+)
 
 var percentRegexp = regexp.MustCompile("^" + percentFmt + "$")
 
@@ -272,7 +294,9 @@ func IsValidPassword(password string) error {
 		appendError("special character missing")
 	}
 	if !(minPassLength <= passLen && passLen <= maxPassLength) {
-		appendError(fmt.Sprintf("password length must be between %d to %d characters long", minPassLength, maxPassLength))
+		appendError(
+			fmt.Sprintf("password length must be between %d to %d characters long", minPassLength, maxPassLength),
+		)
 	}
 
 	if len(errorString) != 0 {

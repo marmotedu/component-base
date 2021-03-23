@@ -211,7 +211,8 @@ func (r *Requirement) Matches(ls Labels) bool {
 
 		// There should be only one strValue in r.strValues, and can be converted to an integer.
 		if len(r.strValues) != 1 {
-			// klog.V(10).Infof("Invalid values count %+v of requirement %#v, for 'Gt', 'Lt' operators, exactly one value is required", len(r.strValues), r)
+			// klog.V(10).Infof("Invalid values count %+v of requirement %#v, for 'Gt', 'Lt' operators, exactly one
+			// value is required", len(r.strValues), r)
 			return false
 		}
 
@@ -219,11 +220,13 @@ func (r *Requirement) Matches(ls Labels) bool {
 		for i := range r.strValues {
 			rValue, err = strconv.ParseInt(r.strValues[i], 10, 64)
 			if err != nil {
-				// klog.V(10).Infof("ParseInt failed for value %+v in requirement %#v, for 'Gt', 'Lt' operators, the value must be an integer", r.strValues[i], r)
+				// klog.V(10).Infof("ParseInt failed for value %+v in requirement %#v, for 'Gt', 'Lt' operators, the
+				// value must be an integer", r.strValues[i], r)
 				return false
 			}
 		}
-		return (r.operator == selection.GreaterThan && lsValue > rValue) || (r.operator == selection.LessThan && lsValue < rValue)
+		return (r.operator == selection.GreaterThan && lsValue > rValue) ||
+			(r.operator == selection.LessThan && lsValue < rValue)
 	default:
 		return false
 	}
@@ -891,7 +894,10 @@ func SelectorFromValidatedSet(ls Set) Selector {
 	}
 	requirements := make([]Requirement, 0, len(ls))
 	for label, value := range ls {
-		requirements = append(requirements, Requirement{key: label, operator: selection.Equals, strValues: []string{value}})
+		requirements = append(
+			requirements,
+			Requirement{key: label, operator: selection.Equals, strValues: []string{value}},
+		)
 	}
 	// sort to have deterministic string representation
 	sort.Sort(ByKey(requirements))

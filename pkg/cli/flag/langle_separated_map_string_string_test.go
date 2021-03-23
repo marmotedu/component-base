@@ -19,7 +19,11 @@ func TestStringLangleSeparatedMapStringString(t *testing.T) {
 		{"nil", NewLangleSeparatedMapStringString(&nilMap), ""},
 		{"empty", NewLangleSeparatedMapStringString(&map[string]string{}), ""},
 		{"one key", NewLangleSeparatedMapStringString(&map[string]string{"one": "foo"}), "one<foo"},
-		{"two keys", NewLangleSeparatedMapStringString(&map[string]string{"one": "foo", "two": "bar"}), "one<foo,two<bar"},
+		{
+			"two keys",
+			NewLangleSeparatedMapStringString(&map[string]string{"one": "foo", "two": "bar"}),
+			"one<foo,two<bar",
+		},
 	}
 	for _, c := range cases {
 		t.Run(c.desc, func(t *testing.T) {

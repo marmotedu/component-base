@@ -201,7 +201,12 @@ func TooLong(field *Path, value interface{}, maxLength int) *Error {
 // report that a given list has too many items. This is similar to TooLong,
 // but the returned error indicates quantity instead of length.
 func TooMany(field *Path, actualQuantity, maxQuantity int) *Error {
-	return &Error{ErrorTypeTooMany, field.String(), actualQuantity, fmt.Sprintf("must have at most %d items", maxQuantity)}
+	return &Error{
+		ErrorTypeTooMany,
+		field.String(),
+		actualQuantity,
+		fmt.Sprintf("must have at most %d items", maxQuantity),
+	}
 }
 
 // InternalError returns a *Error indicating "internal error".  This is used

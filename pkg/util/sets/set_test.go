@@ -206,7 +206,11 @@ func TestStringUnion(t *testing.T) {
 		}
 
 		if !union.Equal(test.expected) {
-			t.Errorf("Expected union.Equal(expected) but not true.  union:%v expected:%v", union.List(), test.expected.List())
+			t.Errorf(
+				"Expected union.Equal(expected) but not true.  union:%v expected:%v",
+				union.List(),
+				test.expected.List(),
+			)
 		}
 	}
 }
@@ -251,7 +255,11 @@ func TestStringIntersection(t *testing.T) {
 		}
 
 		if !intersection.Equal(test.expected) {
-			t.Errorf("Expected intersection.Equal(expected) but not true.  intersection:%v expected:%v", intersection.List(), test.expected.List())
+			t.Errorf(
+				"Expected intersection.Equal(expected) but not true.  intersection:%v expected:%v",
+				intersection.List(),
+				test.expected.List(),
+			)
 		}
 	}
 }

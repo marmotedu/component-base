@@ -97,7 +97,14 @@ func (this *JSONInt) unmarshalValue(val reflect.Value) error {
 			json.data = data
 		}
 		return nil
-	case JSONBoolType, JSONFloatType, JSONArrayType, JSONDictType, JSONBoolPtrType, JSONFloatPtrType, JSONArrayPtrType, JSONDictPtrType:
+	case JSONBoolType,
+		JSONFloatType,
+		JSONArrayType,
+		JSONDictType,
+		JSONBoolPtrType,
+		JSONFloatPtrType,
+		JSONArrayPtrType,
+		JSONDictPtrType:
 		return ErrTypeMismatch // fmt.Errorf("JSONInt type mismatch %s", val.Type())
 	case tristate.TriStateType:
 		if this.data == 0 {
@@ -159,7 +166,14 @@ func (this *JSONBool) unmarshalValue(val reflect.Value) error {
 			json.data = data
 		}
 		return nil
-	case JSONIntType, JSONFloatType, JSONArrayType, JSONDictType, JSONIntPtrType, JSONFloatPtrType, JSONArrayPtrType, JSONDictPtrType:
+	case JSONIntType,
+		JSONFloatType,
+		JSONArrayType,
+		JSONDictType,
+		JSONIntPtrType,
+		JSONFloatPtrType,
+		JSONArrayPtrType,
+		JSONDictPtrType:
 		return ErrTypeMismatch // fmt.Errorf("JSONBool type mismatch %s", val.Type())
 	case tristate.TriStateType:
 		if this.data {
@@ -539,7 +553,13 @@ func (this *JSONDict) unmarshalMap(val reflect.Value) error {
 	return nil
 }
 
-func setStructFieldAt(key string, v JSONObject, fieldValues reflectutils.SStructFieldValueSet, keyIndexMap map[string][]int, visited map[string]bool) error {
+func setStructFieldAt(
+	key string,
+	v JSONObject,
+	fieldValues reflectutils.SStructFieldValueSet,
+	keyIndexMap map[string][]int,
+	visited map[string]bool,
+) error {
 	if visited == nil {
 		visited = make(map[string]bool)
 	}

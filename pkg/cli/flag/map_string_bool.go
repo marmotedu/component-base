@@ -12,7 +12,8 @@ import (
 )
 
 // MapStringBool can be set from the command line with the format `--flag "string=bool"`.
-// Multiple comma-separated key-value pairs in a single invocation are supported. For example: `--flag "a=true,b=false"`.
+// Multiple comma-separated key-value pairs in a single invocation are supported. For example: `--flag
+// "a=true,b=false"`.
 // Multiple flag invocations are supported. For example: `--flag "a=true" --flag "b=false"`.
 type MapStringBool struct {
 	Map         *map[string]bool

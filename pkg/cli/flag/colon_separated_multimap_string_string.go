@@ -15,11 +15,13 @@ import (
 // A key can be repeated multiple times, in which case the values are appended to a
 // slice of strings associated with that key. Items in the list associated with a given
 // key will appear in the order provided.
-// For example: `a:hello,b:again,c:world,b:beautiful` results in `{"a": ["hello"], "b": ["again", "beautiful"], "c": ["world"]}`
+// For example: `a:hello,b:again,c:world,b:beautiful` results in `{"a": ["hello"], "b": ["again", "beautiful"], "c":
+// ["world"]}`
 // The first call to Set will clear the map before adding entries; subsequent calls will simply append to the map.
 // This makes it possible to override default values with a command-line option rather than appending to defaults,
 // while still allowing the distribution of key-value pairs across multiple flag invocations.
-// For example: `--flag "a:hello" --flag "b:again" --flag "b:beautiful" --flag "c:world"` results in `{"a": ["hello"], "b": ["again", "beautiful"], "c": ["world"]}`.
+// For example: `--flag "a:hello" --flag "b:again" --flag "b:beautiful" --flag "c:world"` results in `{"a": ["hello"],
+// "b": ["again", "beautiful"], "c": ["world"]}`.
 type ColonSeparatedMultimapStringString struct {
 	Multimap    *map[string][]string
 	initialized bool // set to true after the first Set call

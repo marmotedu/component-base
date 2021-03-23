@@ -42,12 +42,14 @@ func (info Info) String() string {
 	if s, err := info.Text(); err == nil {
 		return string(s)
 	}
+
 	return info.GitVersion
 }
 
 // ToJSON returns the JSON string of version information.
 func (info Info) ToJSON() string {
 	s, _ := json.Marshal(info)
+
 	return string(s)
 }
 
@@ -65,6 +67,7 @@ func (info Info) Text() ([]byte, error) {
 	table.AddRow("goVersion:", info.GoVersion)
 	table.AddRow("compiler:", info.Compiler)
 	table.AddRow("platform:", info.Platform)
+
 	return table.Bytes(), nil
 }
 

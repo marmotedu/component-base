@@ -213,12 +213,34 @@ func TestLexerSequence(t *testing.T) {
 	}{
 		{"key in ( value )", []Token{IdentifierToken, InToken, OpenParToken, IdentifierToken, ClosedParToken}},
 		{"key notin ( value )", []Token{IdentifierToken, NotInToken, OpenParToken, IdentifierToken, ClosedParToken}},
-		{"key in ( value1, value2 )", []Token{IdentifierToken, InToken, OpenParToken, IdentifierToken, CommaToken, IdentifierToken, ClosedParToken}},
+		{
+			"key in ( value1, value2 )",
+			[]Token{
+				IdentifierToken,
+				InToken,
+				OpenParToken,
+				IdentifierToken,
+				CommaToken,
+				IdentifierToken,
+				ClosedParToken,
+			},
+		},
 		{"key", []Token{IdentifierToken}},
 		{"!key", []Token{DoesNotExistToken, IdentifierToken}},
 		{"()", []Token{OpenParToken, ClosedParToken}},
 		{"x in (),y", []Token{IdentifierToken, InToken, OpenParToken, ClosedParToken, CommaToken, IdentifierToken}},
-		{"== != (), = notin", []Token{DoubleEqualsToken, NotEqualsToken, OpenParToken, ClosedParToken, CommaToken, EqualsToken, NotInToken}},
+		{
+			"== != (), = notin",
+			[]Token{
+				DoubleEqualsToken,
+				NotEqualsToken,
+				OpenParToken,
+				ClosedParToken,
+				CommaToken,
+				EqualsToken,
+				NotInToken,
+			},
+		},
 		{"key>2", []Token{IdentifierToken, GreaterThanToken, IdentifierToken}},
 		{"key<1", []Token{IdentifierToken, LessThanToken, IdentifierToken}},
 	}
@@ -249,15 +271,56 @@ func TestParserLookahead(t *testing.T) {
 		s string
 		t []Token
 	}{
-		{"key in ( value )", []Token{IdentifierToken, InToken, OpenParToken, IdentifierToken, ClosedParToken, EndOfStringToken}},
-		{"key notin ( value )", []Token{IdentifierToken, NotInToken, OpenParToken, IdentifierToken, ClosedParToken, EndOfStringToken}},
-		{"key in ( value1, value2 )", []Token{IdentifierToken, InToken, OpenParToken, IdentifierToken, CommaToken, IdentifierToken, ClosedParToken, EndOfStringToken}},
+		{
+			"key in ( value )",
+			[]Token{IdentifierToken, InToken, OpenParToken, IdentifierToken, ClosedParToken, EndOfStringToken},
+		},
+		{
+			"key notin ( value )",
+			[]Token{IdentifierToken, NotInToken, OpenParToken, IdentifierToken, ClosedParToken, EndOfStringToken},
+		},
+		{
+			"key in ( value1, value2 )",
+			[]Token{
+				IdentifierToken,
+				InToken,
+				OpenParToken,
+				IdentifierToken,
+				CommaToken,
+				IdentifierToken,
+				ClosedParToken,
+				EndOfStringToken,
+			},
+		},
 		{"key", []Token{IdentifierToken, EndOfStringToken}},
 		{"!key", []Token{DoesNotExistToken, IdentifierToken, EndOfStringToken}},
 		{"()", []Token{OpenParToken, ClosedParToken, EndOfStringToken}},
 		{"", []Token{EndOfStringToken}},
-		{"x in (),y", []Token{IdentifierToken, InToken, OpenParToken, ClosedParToken, CommaToken, IdentifierToken, EndOfStringToken}},
-		{"== != (), = notin", []Token{DoubleEqualsToken, NotEqualsToken, OpenParToken, ClosedParToken, CommaToken, EqualsToken, NotInToken, EndOfStringToken}},
+		{
+			"x in (),y",
+			[]Token{
+				IdentifierToken,
+				InToken,
+				OpenParToken,
+				ClosedParToken,
+				CommaToken,
+				IdentifierToken,
+				EndOfStringToken,
+			},
+		},
+		{
+			"== != (), = notin",
+			[]Token{
+				DoubleEqualsToken,
+				NotEqualsToken,
+				OpenParToken,
+				ClosedParToken,
+				CommaToken,
+				EqualsToken,
+				NotInToken,
+				EndOfStringToken,
+			},
+		},
 		{"key>2", []Token{IdentifierToken, GreaterThanToken, IdentifierToken, EndOfStringToken}},
 		{"key<1", []Token{IdentifierToken, LessThanToken, IdentifierToken, EndOfStringToken}},
 	}
@@ -421,7 +484,12 @@ func TestSetSelectorParser(t *testing.T) {
 			getRequirement("this-is-a-dns.domain.com/key-with-dash", selection.Exists, nil, t),
 		}, true, true},
 		{"this-is-another-dns.domain.com/key-with-dash in (so,what)", internalSelector{
-			getRequirement("this-is-another-dns.domain.com/key-with-dash", selection.In, sets.NewString("so", "what"), t),
+			getRequirement(
+				"this-is-another-dns.domain.com/key-with-dash",
+				selection.In,
+				sets.NewString("so", "what"),
+				t,
+			),
 		}, true, true},
 		{"0.1.2.domain/99 notin (10.10.100.1, tick.tack.clock)", internalSelector{
 			getRequirement("0.1.2.domain/99", selection.NotIn, sets.NewString("10.10.100.1", "tick.tack.clock"), t),
@@ -699,14 +767,18 @@ func TestValidatedSelectorFromSet(t *testing.T) {
 		expectedError    error
 	}{
 		{
-			name:             "Simple Set, no error",
-			input:            Set{"key": "val"},
-			expectedSelector: internalSelector([]Requirement{{key: "key", operator: selection.Equals, strValues: []string{"val"}}}),
+			name:  "Simple Set, no error",
+			input: Set{"key": "val"},
+			expectedSelector: internalSelector(
+				[]Requirement{{key: "key", operator: selection.Equals, strValues: []string{"val"}}},
+			),
 		},
 		{
-			name:          "Invalid Set, value too long",
-			input:         Set{"Key": "axahm2EJ8Phiephe2eixohbee9eGeiyees1thuozi1xoh0GiuH3diewi8iem7Nui"},
-			expectedError: fmt.Errorf(`invalid label value: "axahm2EJ8Phiephe2eixohbee9eGeiyees1thuozi1xoh0GiuH3diewi8iem7Nui": at key: "Key": must be no more than 63 characters`),
+			name:  "Invalid Set, value too long",
+			input: Set{"Key": "axahm2EJ8Phiephe2eixohbee9eGeiyees1thuozi1xoh0GiuH3diewi8iem7Nui"},
+			expectedError: fmt.Errorf(
+				`invalid label value: "axahm2EJ8Phiephe2eixohbee9eGeiyees1thuozi1xoh0GiuH3diewi8iem7Nui": at key: "Key": must be no more than 63 characters`,
+			),
 		},
 	}
 

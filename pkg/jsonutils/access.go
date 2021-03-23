@@ -449,7 +449,8 @@ func (this *JSONString) Bool(keys ...string) (bool, error) {
 	if len(keys) > 0 {
 		return false, ErrOutOfKeyRange // fmt.Errorf("Out of key range: %s", keys)
 	}
-	if strings.EqualFold(this.data, "true") || strings.EqualFold(this.data, "on") || strings.EqualFold(this.data, "yes") || this.data == "1" {
+	if strings.EqualFold(this.data, "true") || strings.EqualFold(this.data, "on") || strings.EqualFold(this.data, "yes") ||
+		this.data == "1" {
 		return true, nil
 	} else if strings.EqualFold(this.data, "false") || strings.EqualFold(this.data, "off") || strings.EqualFold(this.data, "no") || this.data == "0" {
 		return false, nil

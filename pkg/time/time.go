@@ -6,10 +6,9 @@
 package time
 
 import (
+	sqldriver "database/sql/driver"
 	"fmt"
 	"time"
-
-	sqldriver "database/sql/driver"
 )
 
 const (

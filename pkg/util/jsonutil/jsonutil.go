@@ -5,9 +5,8 @@
 package jsonutil
 
 import (
+	"fmt"
 	"strings"
-
-	"k8s.io/klog"
 
 	"github.com/marmotedu/component-base/pkg/json"
 )
@@ -18,7 +17,7 @@ func (m JSONRawMessage) Find(key string) JSONRawMessage {
 	var objmap map[string]json.RawMessage
 	err := json.Unmarshal(m, &objmap)
 	if err != nil {
-		klog.Errorf("Resolve JSON Key failed, find key =%s, err=%s",
+		fmt.Printf("Resolve JSON Key failed, find key =%s, err=%s",
 			key, err)
 		return nil
 	}
@@ -29,7 +28,7 @@ func (m JSONRawMessage) ToList() []JSONRawMessage {
 	var lists []json.RawMessage
 	err := json.Unmarshal(m, &lists)
 	if err != nil {
-		klog.Errorf("Resolve JSON List failed, err=%s",
+		fmt.Printf("Resolve JSON List failed, err=%s",
 			err)
 		return nil
 	}

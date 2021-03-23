@@ -8,7 +8,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-
 	"github.com/marmotedu/errors"
 	"github.com/marmotedu/log"
 )

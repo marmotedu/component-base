@@ -88,6 +88,7 @@ func registrationFunc(tag string, translation string) validator.RegisterTranslat
 		if err = ut.Add(tag, translation, true); err != nil {
 			return
 		}
+
 		return
 	}
 }
@@ -97,6 +98,7 @@ func translateFunc(ut ut.Translator, fe validator.FieldError) string {
 	if err != nil {
 		return fe.(error).Error()
 	}
+
 	return t
 }
 
@@ -134,6 +136,7 @@ func validateDir(fl validator.FieldLevel) bool {
 	if stat, err := os.Stat(path); err == nil && stat.IsDir() {
 		return true
 	}
+
 	return false
 }
 
@@ -143,12 +146,14 @@ func validateFile(fl validator.FieldLevel) bool {
 	if stat, err := os.Stat(path); err == nil && !stat.IsDir() {
 		return true
 	}
+
 	return false
 }
 
 // validateDescription checks if a given description is illegal.
 func validateDescription(fl validator.FieldLevel) bool {
 	description := fl.Field().String()
+
 	return len(description) <= maxDescriptionLength
 }
 

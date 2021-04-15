@@ -6,6 +6,8 @@ package v1
 
 import (
 	"time"
+
+	"github.com/marmotedu/component-base/pkg/json"
 )
 
 // TypeMeta describes an individual object in an API response or request
@@ -57,6 +59,12 @@ type ObjectMeta struct {
 	// It will be generated automated only if Name is not specified.
 	// Cannot be updated.
 	Name string `json:"name,omitempty" gorm:"column:name" validate:"name"`
+
+	// Extend store the fields that need to be added, but do not want to add a new table column, will not be stored in db.
+	Extend Extend `json:"extend,omitempty" gorm:"-" validate:"omitempty"`
+
+	// ExtendShadow is the shadow of Extend. DO NOT modify directly.
+	ExtendShadow string `json:"-" gorm:"column:extendShadow" validate:"omitempty"`
 
 	// CreatedAt is a timestamp representing the server time when this object was
 	// created. It is not guaranteed to be set in happens-before order across separate operations.
@@ -189,4 +197,28 @@ type TableOptions struct {
 	// NoHeaders is only exposed for internal callers. It is not included in our OpenAPI definitions
 	// and may be removed as a field in a future release.
 	NoHeaders bool `json:"-"`
+}
+
+// Extend defines a new type used to store extended fields.
+type Extend map[string]interface{}
+
+// String returns the string format of Extend.
+func (ext Extend) String() string {
+	data, _ := json.Marshal(ext)
+	return string(data)
+}
+
+// Merge merge extend fields from extendShadow.
+func (ext Extend) Merge(extendShadow string) Extend {
+	var extend Extend
+
+	// always trust the extendShadow in the database
+	_ = json.Unmarshal([]byte(extendShadow), &extend)
+	for k, v := range extend {
+		if _, ok := ext[k]; !ok {
+			ext[k] = v
+		}
+	}
+
+	return ext
 }

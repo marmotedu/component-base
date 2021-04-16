@@ -43,17 +43,19 @@ func GetIntID() uint64 {
 	return id
 }
 
-// GetUUID returns id format like: B6BZVN3mOPvx.
-func GetUUID(prefix string) string {
-	id := GetIntID()
+// GetInstanceID returns id format like: secret-2v69o5
+func GetInstanceID(uid uint64, prefix string) string {
 	hd := hashids.NewData()
+	hd.Alphabet = Alphabet36
+	hd.MinLength = 6
+	hd.Salt = "x20k5x"
 
 	h, err := hashids.NewWithData(hd)
 	if err != nil {
 		panic(err)
 	}
 
-	i, err := h.Encode([]int{int(id)})
+	i, err := h.Encode([]int{int(uid)})
 	if err != nil {
 		panic(err)
 	}

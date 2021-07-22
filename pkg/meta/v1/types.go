@@ -44,6 +44,10 @@ type ObjectMeta struct {
 	// Read-only.
 	ID uint64 `json:"id,omitempty" gorm:"primary_key;AUTO_INCREMENT;column:id"`
 
+	// InstanceID defines a string type resource identifier,
+	// use prefixed to distinguish resource types, easy to remember, Url-friendly.
+	InstanceID string `json:"instanceID,omitempty" gorm:"unique;column:instanceID;type:varchar(32);not null"`
+
 	// Name defines the space within each name must be unique.
 	// Not all objects are required to be scoped to a username - the value of this field for
 	// those objects will be empty.
@@ -59,10 +63,6 @@ type ObjectMeta struct {
 	// It will be generated automated only if Name is not specified.
 	// Cannot be updated.
 	Name string `json:"name,omitempty" gorm:"column:name;type:varchar(64);not null" validate:"name"`
-
-	// InstanceID defines a string type resource identifier,
-	// use prefixed to distinguish resource types, easy to remember, Url-friendly.
-	InstanceID string `json:"instanceID,omitempty" gorm:"unique;column:instanceID;type:varchar(32);not null"`
 
 	// Extend store the fields that need to be added, but do not want to add a new table column, will not be stored in db.
 	Extend Extend `json:"extend,omitempty" gorm:"-" validate:"omitempty"`

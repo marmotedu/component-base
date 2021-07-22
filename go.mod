@@ -15,7 +15,7 @@ require (
 	github.com/gosuri/uitable v0.0.4
 	github.com/h2non/filetype v1.1.1
 	github.com/json-iterator/go v1.1.10
-	github.com/marmotedu/errors v0.0.1
+	github.com/marmotedu/errors v1.0.2
 	github.com/marmotedu/log v0.0.1
 	github.com/mattn/go-runewidth v0.0.10 // indirect
 	github.com/moby/term v0.0.0-20201216013528-df9cb8a40635

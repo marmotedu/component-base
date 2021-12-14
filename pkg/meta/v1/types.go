@@ -8,6 +8,8 @@ import (
 	"time"
 
 	"github.com/marmotedu/component-base/pkg/json"
+	"github.com/marmotedu/component-base/pkg/util/idutil"
+	"gorm.io/gorm"
 )
 
 // TypeMeta describes an individual object in an API response or request
@@ -94,6 +96,36 @@ type ObjectMeta struct {
 	// Populated by the system when a graceful deletion is requested.
 	// Read-only.
 	// DeletedAt gorm.DeletedAt `json:"-" gorm:"column:deletedAt;index:idx_deletedAt"`
+}
+
+// BeforeCreate run before create database record.
+func (obj *ObjectMeta) BeforeCreate(tx *gorm.DB) error {
+	obj.ExtendShadow = obj.Extend.String()
+
+	return nil
+}
+
+// AfterCreate run after create database record.
+func (obj *ObjectMeta) AfterCreate(tx *gorm.DB) error {
+	obj.InstanceID = idutil.GetInstanceID(obj.ID, "secret-")
+
+	return tx.Save(obj).Error
+}
+
+// BeforeUpdate run before update database record.
+func (obj *ObjectMeta) BeforeUpdate(tx *gorm.DB) error {
+	obj.ExtendShadow = obj.Extend.String()
+
+	return nil
+}
+
+// AfterFind run after find to unmarshal a extend shadown string into metav1.Extend struct.
+func (obj *ObjectMeta) AfterFind(tx *gorm.DB) error {
+	if err := json.Unmarshal([]byte(obj.ExtendShadow), &obj.Extend); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // ListOptions is the query options to a standard REST list call.

@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/marmotedu/component-base/pkg/json"
-	"github.com/marmotedu/component-base/pkg/util/idutil"
 	"gorm.io/gorm"
 )
 
@@ -103,13 +102,6 @@ func (obj *ObjectMeta) BeforeCreate(tx *gorm.DB) error {
 	obj.ExtendShadow = obj.Extend.String()
 
 	return nil
-}
-
-// AfterCreate run after create database record.
-func (obj *ObjectMeta) AfterCreate(tx *gorm.DB) error {
-	obj.InstanceID = idutil.GetInstanceID(obj.ID, "secret-")
-
-	return tx.Save(obj).Error
 }
 
 // BeforeUpdate run before update database record.
